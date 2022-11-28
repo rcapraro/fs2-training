@@ -47,17 +47,17 @@ object Channels extends IOApp.Simple {
         .stream
         .evalMap {
           case Temperature(t) => IO.println(f"$t%.1f °C is too hot! Cooling down...")
-          case Humidity(h) => IO.println(f"$h%.1f percent is too dry! Humidifying...")
+          case Humidity(h)    => IO.println(f"$h%.1f percent is too dry! Humidifying...")
         }
         .drain
 
     val temperatureThreshold = Temperature(20.0)
-    val humidityThreshold = Humidity(10.0)
+    val humidityThreshold    = Humidity(10.0)
 
     val program = Stream.eval(Channel.unbounded[IO, Measurement]).flatMap { alarmChannel =>
       val temperatureSensor = createTemperatureSensor(alarmChannel, temperatureThreshold)
-      val humiditySensor = createHumiditySensor(alarmChannel, humidityThreshold)
-      val cooler = createCooler(alarmChannel)
+      val humiditySensor    = createHumiditySensor(alarmChannel, humidityThreshold)
+      val cooler            = createCooler(alarmChannel)
       Stream(temperatureSensor, humiditySensor, cooler).parJoinUnbounded
     }
 

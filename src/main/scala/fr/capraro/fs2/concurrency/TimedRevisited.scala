@@ -50,7 +50,7 @@ object TimedRevisited extends IOApp.Simple {
     awakeEveryStream.take(3).compile.toList.flatMap(IO.println)
     awakeEveryStream.zipRight(s).take(3).compile.toList.flatMap(IO.println)
 
-    val awakeDelayStream: Stream[IO, FiniteDuration] =  Stream.awakeDelay[IO](2.seconds)
+    val awakeDelayStream: Stream[IO, FiniteDuration] = Stream.awakeDelay[IO](2.seconds)
     awakeDelayStream.zipRight(s).take(3).compile.toList.flatMap(IO.println)
   }
 }

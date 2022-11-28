@@ -10,7 +10,6 @@ object Zip extends IOApp.Simple {
 
   override def run: IO[Unit] = {
 
-
     val s1 = Stream(1, 2, 3).covary[IO].metered(1.second)
     val s2 = Stream(4, 5, 6, 7).covary[IO].metered(100.millis)
 
@@ -33,7 +32,6 @@ object Zip extends IOApp.Simple {
     val s5 = Stream.iterateEval(0)(i => IO.println(s"Pulling right $i").as(i + 1))
     s4.zip(s5).take(15).compile.toList.flatMap(IO.println)
     s4.parZip(s5).take(15).compile.toList.flatMap(IO.println)
-
 
   }
 

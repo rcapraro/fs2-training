@@ -12,7 +12,6 @@ object Concurrently extends IOApp.Simple {
     val s2 = Stream(4, 5, 6).covary[IO].printlns
     s1.concurrently(s2).compile.drain // from now, pretty much like merge
 
-
     val s1Inf = Stream.iterate(0)(_ + 1).covary[IO].printlns
     s1Inf.concurrently(s2).interruptAfter(3.seconds).compile.drain // from now, pretty much like merge
 
@@ -24,8 +23,8 @@ object Concurrently extends IOApp.Simple {
     s1Inf.concurrently(s2Failing).compile.drain
     s1Failing.concurrently(s2Inf).compile.drain
 
-    val s3 =  Stream.iterate(3_000)(_ + 1).covary[IO]
-    val s4 =  Stream.iterate(4_000)(_ + 1).covary[IO]
+    val s3 = Stream.iterate(3_000)(_ + 1).covary[IO]
+    val s4 = Stream.iterate(4_000)(_ + 1).covary[IO]
     s3.concurrently(s4).take(100).compile.toList.flatMap(IO.println) // different from merge, emits s3 elements only
 
     // Exercise
@@ -47,9 +46,8 @@ object Concurrently extends IOApp.Simple {
     // Create a stream that emit a ref (initially 0)
     // Run the processor and the progressTracker concurrently
     Stream.eval(Ref.of[IO, Int](0)).flatMap { itemsProcessed =>
-      processor(itemsProcessed).concurrently(progressTracker(itemsProcessed)) //processor on the left, it's the one doing the "real" work
+      processor(itemsProcessed).concurrently(progressTracker(itemsProcessed)) // processor on the left, it's the one doing the "real" work
     }.compile.drain
-
 
   }
 

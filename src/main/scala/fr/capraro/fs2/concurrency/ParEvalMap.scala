@@ -40,7 +40,7 @@ object ParEvalMap extends IOApp.Simple {
         IO.pure(List.range(1, 10).map(seqNo => Event(job.id, seqNo)))
     }
 
-    extension[A] (s: Stream[IO, A]) {
+    extension [A](s: Stream[IO, A]) {
 
       def parEvalMapSeq[B](maxConcurrent: Int)(f: A => IO[List[B]]): Stream[IO, B] =
         s.parEvalMap(maxConcurrent)(f).flatMap(Stream.emits)

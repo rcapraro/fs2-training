@@ -4,7 +4,7 @@ import cats.effect.{IO, IOApp}
 import fs2.io.file.{Files, Path}
 import fs2.text
 
-import java.nio.file.{Paths, Files as JFiles}
+import java.nio.file.{Files as JFiles, Paths}
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration.*
 import scala.io.Source

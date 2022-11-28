@@ -15,11 +15,11 @@ object Merge extends IOApp.Simple {
     val s3Inf: Stream[IO, String] = s1Inf.merge(s2Inf)
     s3Inf.interruptAfter(5.seconds).printlns.compile.drain
 
-    val s1Failing = Stream("1", "2", "3").covary[IO].metered(100.millis) ++ Stream.raiseError[IO](new Exception("s1 failed"))
+    val s1Failing    = Stream("1", "2", "3").covary[IO].metered(100.millis) ++ Stream.raiseError[IO](new Exception("s1 failed"))
     val sLeftFailing = s1Failing.merge(s2Inf)
     sLeftFailing.interruptAfter(5.seconds).printlns.compile.drain
 
-    val s2Failing = Stream("a", "b", "c").covary[IO].metered(200.millis) ++ Stream.raiseError[IO](new Exception("s1 failed"))
+    val s2Failing      = Stream("a", "b", "c").covary[IO].metered(200.millis) ++ Stream.raiseError[IO](new Exception("s1 failed"))
     val s3RightFailing = s1Inf.merge(s2Failing)
     s3RightFailing.interruptAfter(5.seconds).printlns.compile.drain
 
